@@ -1,4 +1,3 @@
-# routers/product_router.py
 from fastapi import APIRouter, status, Query
 from models.product import ProductCreate, ProductResponse
 from models.pagination import PaginatedResponse
@@ -22,8 +21,8 @@ async def create_product_api(product: ProductCreate):
 async def list_products_api(
     name: Optional[str] = Query(None, description="Partial search by product name"),
     size: Optional[str] = Query(None, description="Filter by product size"),
-    limit: int = Query(10, ge=1, description="Number of documents to return [cite: 6]"),
-    offset: int = Query(0, ge=0, description="Number of documents to skip while paginating (sorted by _id) [cite: 6]")
+    limit: int = Query(10, ge=1, description="Number of documents to return"),
+    offset: int = Query(0, ge=0, description="Number of documents to skip while paginating (sorted by _id)")
 ):
     """
     List Products API

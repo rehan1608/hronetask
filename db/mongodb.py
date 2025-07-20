@@ -17,8 +17,7 @@ class MongoDB:
                 raise ValueError("MONGO_URI environment variable not set.")
             try:
                 MongoDB.client = MongoClient(MONGO_URI)
-                MongoDB.database = MongoDB.client["hronedb"]  # Choose your database name
-                # The ismaster command is cheap and does not require auth.
+                MongoDB.database = MongoDB.client["hronedb"] 
                 MongoDB.client.admin.command('ismaster')
                 print("MongoDB connected successfully!")
             except ConnectionFailure as e:

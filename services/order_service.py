@@ -1,4 +1,3 @@
-# services/order_service.py
 from db.mongodb import MongoDB
 from models.order import OrderCreate, OrderResponse, OrderItemResponse, ProductDetails
 from models.pagination import PaginatedResponse, Page
@@ -12,11 +11,9 @@ class OrderService:
 
     def create_order(self, order: OrderCreate) -> str:
         order_data = order.model_dump()
-        # Calculate total price (simplified for this example, you'd fetch product prices)
+
         total_price = 0.0
         for item in order_data["items"]:
-            # In a real app, you'd look up the productId and get its price
-            # For this task, we'll assume the product exists and add a dummy price or fetch it if needed for 'total'
             # Let's fetch product price to calculate total accurately
             product_id_obj = ObjectId(item["productId"])
             product_info = self.products_collection.find_one({"_id": product_id_obj}, {"price": 1})
@@ -27,7 +24,6 @@ class OrderService:
                 print(f"Product with ID {item['productId']} not found for order.")
 
         order_data["total"] = total_price
-        # order_data["userId"] = "user_1" # Hardcoded userId as per problem [cite: 7]
         result = self.orders_collection.insert_one(order_data)
         return str(result.inserted_id)
 
@@ -36,11 +32,11 @@ class OrderService:
 
         total_orders = self.orders_collection.count_documents(query)
 
-        # We need to join/lookup the product details at query time [cite: 8]
+        # We need to join/lookup the product details at query time
         # Using aggregation pipeline for lookup
         pipeline = [
             {"$match": {"userId": user_id}},
-            {"$sort": {"_id": 1}}, # Sorted by _id for pagination [cite: 7]
+            {"$sort": {"_id": 1}}, # Sorted by _id for pagination 
             {"$skip": offset},
             {"$limit": limit},
             {"$unwind": "$items"}, # Deconstruct the items array
@@ -75,11 +71,6 @@ class OrderService:
             }}
         ]
         
-        # --- IMPORTANT DEBUGGING STEP ---
-        # print("Aggregation Pipeline:")
-        # import json
-        # print(json.dumps(pipeline, indent=2))
-        # --- END DEBUGGING STEP ---
 
         orders_cursor = self.orders_collection.aggregate(pipeline)
         

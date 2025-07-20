@@ -1,4 +1,3 @@
-# routers/order_router.py
 from fastapi import APIRouter, status, Query, Path
 from models.order import OrderCreate, OrderResponse
 from models.pagination import PaginatedResponse
@@ -14,14 +13,14 @@ async def create_order_api(order: OrderCreate):
     Create Order API
     """
     order_id = order_service.create_order(order)
-    # The problem statement response is {"$id": "1234567890"} [cite: 7]
+    # The problem statement response is {"$id": "1234567890"}
     return {"id": order_id}
 
 @router.get("/orders/{user_id}", response_model=PaginatedResponse, status_code=status.HTTP_200_OK)
 async def get_list_of_orders_api(
     user_id: str = Path(..., description="The ID of the user whose orders to retrieve"),
-    limit: int = Query(10, ge=1, description="Number of documents to return [cite: 7]"),
-    offset: int = Query(0, ge=0, description="Number of documents to skip while paginating (sorted by _id) [cite: 7]")
+    limit: int = Query(10, ge=1, description="Number of documents to return "),
+    offset: int = Query(0, ge=0, description="Number of documents to skip while paginating (sorted by _id)")
 ):
     """
     Get List of Orders API

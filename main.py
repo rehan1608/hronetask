@@ -1,4 +1,3 @@
-# main.py
 from fastapi import FastAPI
 from routers import product_router, order_router
 from db.mongodb import MongoDB
@@ -34,13 +33,6 @@ async def root():
     return {"message": "Welcome to HROne E-commerce API! Visit /docs for API documentation."}
 
 if __name__ == "__main__":
-    # Ensure MONGO_URI is set for local testing
-    # For deployment, this will be set in the environment
     if os.getenv("MONGO_URI") is None:
         print("Warning: MONGO_URI environment variable is not set. Please set it in .env or your environment.")
-        # As a fallback for local testing, you might hardcode it here or prompt the user.
-        # For this exercise, assume it's set in .env or during deployment.
-    
-    # Run the application using Uvicorn
-    # Host '0.0.0.0' makes it accessible externally (useful for Docker/deployment)
     uvicorn.run(app, host="0.0.0.0", port=8000)

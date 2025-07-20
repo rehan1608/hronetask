@@ -1,4 +1,3 @@
-# services/product_service.py
 from db.mongodb import MongoDB
 from models.product import ProductCreate, ProductResponse
 from models.pagination import PaginatedResponse, Page
@@ -17,13 +16,12 @@ class ProductService:
     def list_products(self, name: Optional[str] = None, size: Optional[str] = None, limit: int = 10, offset: int = 0) -> PaginatedResponse:
         query = {}
         if name:
-            query["name"] = {"$regex": name, "$options": "i"} # Case-insensitive partial search [cite: 5]
+            query["name"] = {"$regex": name, "$options": "i"} # Case-insensitive partial search 
         if size:
-            query["sizes.size"] = size # Filter by size [cite: 5]
-
+            query["sizes.size"] = size # Filter by size
         total_products = self.collection.count_documents(query)
         
-        # Sort by _id for consistent pagination [cite: 6]
+        # Sort by _id for consistent pagination
         products_cursor = self.collection.find(query, {"name": 1, "price": 1}).sort("_id").skip(offset).limit(limit)
         
         products = []
@@ -33,7 +31,7 @@ class ProductService:
         next_offset = offset + limit if offset + limit < total_products else None
         previous_offset = offset - limit if offset - limit >= 0 else None
 
-        # Convert next_offset and previous_offset to string for consistency with example [cite: 6]
+        # Convert next_offset and previous_offset to string for consistency with example
         next_page_str = str(next_offset) if next_offset is not None else None
         previous_page_str = str(previous_offset) if previous_offset is not None else None
         
