@@ -19,7 +19,7 @@ This project implements a sample backend application for an e-commerce platform 
 * **python-dotenv**: For managing environment variables.
 
 ## Project Structure
-
+```
 hronetask/
 ├── .env                    # Environment variables (e.g., MongoDB URI)
 ├── main.py                 # Main FastAPI application entry point
@@ -37,7 +37,7 @@ hronetask/
 │   └── order_service.py    # Business logic for Orders
 └── README.md               # This README file
 └── requirements.txt        # Python dependencies
-
+```
 ## Setup and Run Locally
 
 1.  **Clone the repository:**
@@ -252,10 +252,10 @@ Documents will look like:
     }
   ]
 }
-
-###orders Collection
+```
+### `Orders` Collection
 Documents will look like:
-
+```json
 {
   "_id": ObjectId("60c72b2f9b1e8e2b2c3d4e60"),
   "userId": "user_1",
@@ -271,5 +271,5 @@ Documents will look like:
   ],
   "total": 75.97
 }
-
-During the Get List of Orders API call, a $lookup aggregation pipeline will be used to fetch productDetails from the products collection based on productId.
+```
+During the Get List of Orders API call, a `$lookup` aggregation pipeline will be used to fetch productDetails from the products collection based on productId.
